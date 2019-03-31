@@ -16,6 +16,23 @@
 })();
 
 
+var graph = new LGraph();
+
+var canvas = new LGraphCanvas("#mycanvas", graph);
+
+
+var node_const = LiteGraph.createNode("basic/const");
+node_const.pos = [80,400];
+graph.add(node_const);
+node_const.setValue(4.5);
+
+var node_watch = LiteGraph.createNode("basic/watch");
+node_watch.pos = [300,400];
+graph.add(node_watch);
+
+node_const.connect(0, node_watch, 0 );
+
+
 //node constructor class
 function MyAddNode()
 {
@@ -59,7 +76,7 @@ function dif(a,b)
 
 LiteGraph.wrapFunctionAsNode("math/dif",dif, ["Number","Number"],"Number");
 var node_dif = LiteGraph.createNode("math/dif");
-node_dif.pos = [300,400];
+node_dif.pos = [300,480];
 graph.add(node_dif);
 
 
@@ -92,11 +109,11 @@ MyScaleNode.prototype.onExecute = function()
 }
 
 //register in the system
-LiteGraph.registerNodeType("basic/scale", MyScaleNode );
+LiteGraph.registerNodeType("cs1/scale", MyScaleNode );
 
 
-var node_scale = LiteGraph.createNode("basic/scale");
-node_scale.pos = [100,400];
+var node_scale = LiteGraph.createNode("cs1/scale");
+node_scale.pos = [100,700];
 graph.add(node_scale);
 
 
@@ -105,7 +122,7 @@ graph.add(node_scale);
 function MyTextNode()
 {
   this.addOutput("text","string");
-  this.text = this.addWidget("text","Text", "Some text...", (value, widget, node)=>{
+  this.text = this.addWidget("text","Text", "avatar_upgrades", (value, widget, node)=>{
     this.setOutputData( 0, value);
   });
   this.size = [160,40];
@@ -121,11 +138,11 @@ MyTextNode.prototype.onExecute = function()
 }
 
 //register in the system
-LiteGraph.registerNodeType("basic/text", MyTextNode );
+LiteGraph.registerNodeType("cs1/text", MyTextNode );
 
 
-var node_text = LiteGraph.createNode("basic/text");
-node_text.pos = [100,300];
+var node_text = LiteGraph.createNode("cs1/text");
+node_text.pos = [450,200];
 graph.add(node_text);
 
 
@@ -147,10 +164,10 @@ function MyComboNode()
 MyComboNode.title = "Combo";
 
 //register in the system
-LiteGraph.registerNodeType("basic/combo", MyComboNode );
+LiteGraph.registerNodeType("cs1/combo", MyComboNode );
 
 
-var node_combo = LiteGraph.createNode("basic/combo");
+var node_combo = LiteGraph.createNode("cs1/combo");
 node_combo.pos = [100,600];
 graph.add(node_combo);
 
@@ -165,9 +182,9 @@ function textJoin(a,b)
   return `${a} ${b}`;
 }
 
-LiteGraph.wrapFunctionAsNode("basic/textjoin",textJoin, ["string","string"],"string");
-var node_textJoin = LiteGraph.createNode("basic/textjoin");
-node_textJoin.pos = [800,400];
+LiteGraph.wrapFunctionAsNode("cs1/textjoin",textJoin, ["string","string"],"string");
+var node_textJoin = LiteGraph.createNode("cs1/textjoin");
+node_textJoin.pos = [300,600];
 graph.add(node_textJoin);
 
 
@@ -176,6 +193,8 @@ graph.add(node_textJoin);
 //node constructor class
 function MyFetchNode()
 {
+  console.log('FETCH NODE');
+  console.log(this);
   this.addInput("text","string");
   this.text = this.addWidget("button","Fetch Data",null,e=>{
      
@@ -208,12 +227,14 @@ MyFetchNode.prototype.onExecute = e=>{
 }
 
 //register in the system
-LiteGraph.registerNodeType("basic/fetch", MyFetchNode );
+LiteGraph.registerNodeType("cs1/fetch", MyFetchNode );
 
 
-var node_fetch = LiteGraph.createNode("basic/fetch");
-node_fetch.pos = [800,500];
+var node_fetch = LiteGraph.createNode("cs1/fetch");
+node_fetch.pos = [650,200];
 graph.add(node_fetch);
+
+node_text.connect(0, node_fetch, 0 );
 
 
 //node constructor class
@@ -251,14 +272,18 @@ AvatarUpgradeViewNode.prototype.onExecute = function()
 LiteGraph.registerNodeType("cs1/avatarupgradeview", AvatarUpgradeViewNode );
 
 
-var node_avatarUpgradeView = LiteGraph.createNode("cs1/avatarupgradeview");
-node_avatarUpgradeView.pos = [500,200];
-graph.add(node_avatarUpgradeView);
+var node_avatarUpgradeView1 = LiteGraph.createNode("cs1/avatarupgradeview");
+node_avatarUpgradeView1.pos = [900,200];
+graph.add(node_avatarUpgradeView1);
+
+var node_avatarUpgradeView2 = LiteGraph.createNode("cs1/avatarupgradeview");
+node_avatarUpgradeView2.pos = [900,400];
+graph.add(node_avatarUpgradeView2);
 
 
 
 
-
+graph.start()
 
 
 
