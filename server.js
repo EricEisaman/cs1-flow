@@ -58,6 +58,7 @@ app.get("/clear", function (request, response) {
 
 // gets and sends all entries from the collection
 app.get("/avatar_upgrades", function (request, response) {
+  console.log('request made for avatar upgrades');
   var aus = db.get('avatar_upgrades').value() // Find all avatar_upgrades in the collection
   response.send(aus); 
 });

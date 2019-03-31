@@ -177,7 +177,6 @@ graph.add(node_textJoin);
 function MyFetchNode()
 {
   this.addInput("text","string");
-  this.addOutput("text","string");
   this.text = this.addWidget("button","Fetch Data",null,e=>{
      
      fetch(this.getInputData(0))
@@ -186,7 +185,14 @@ function MyFetchNode()
      })
       .then(d=>{
        console.log(d);
-       this.setOutputData( 0, d[0].id);
+       d.forEach( (a,i)=>{
+           console.log(this);
+           if(!this.outputs ||(this.outputs && (d.length>this.outputs.length))){
+             this.addOutput("text","string");
+             this.setOutputData( i, a);         
+           } else this.setOutputData( i, a);;
+           
+       });
      })
       .catch(err=>{console.log(err)})
      
@@ -197,6 +203,10 @@ function MyFetchNode()
 //name to show
 MyFetchNode.title = "Fetch";
 
+MyFetchNode.prototype.onExecute = e=>{
+ 
+}
+
 //register in the system
 LiteGraph.registerNodeType("basic/fetch", MyFetchNode );
 
@@ -204,6 +214,57 @@ LiteGraph.registerNodeType("basic/fetch", MyFetchNode );
 var node_fetch = LiteGraph.createNode("basic/fetch");
 node_fetch.pos = [800,500];
 graph.add(node_fetch);
+
+
+//node constructor class
+function AvatarUpgradeViewNode()
+{
+  this.addInput("avatar","string");
+   this.avatar = {};
+   this.id_txt = this.addWidget("text","ID", "id", (value, widget, node)=>{
+    
+    });
+   this.url_txt = this.addWidget("text","URL", "url", (value, widget, node)=>{
+    
+    });
+   this.pos_txt = this.addWidget("text","POS", "position", (value, widget, node)=>{
+    
+    });
+   this.size = [200,160];
+}
+
+//name to show
+AvatarUpgradeViewNode.title = "Avatar Upgrade View";
+
+//function to call when the node is executed
+AvatarUpgradeViewNode.prototype.onExecute = function()
+{
+  this.avatar = this.getInputData(0);
+  if(!this.avatar)return;
+  this.id_txt.value = this.avatar.id;
+  this.url_txt.value = this.avatar.url.slice(0,20) + '...';
+  this.pos_txt.value = this.avatar.position;
+
+}
+
+//register in the system
+LiteGraph.registerNodeType("cs1/avatarupgradeview", AvatarUpgradeViewNode );
+
+
+var node_avatarUpgradeView = LiteGraph.createNode("cs1/avatarupgradeview");
+node_avatarUpgradeView.pos = [500,200];
+graph.add(node_avatarUpgradeView);
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -219,4 +280,12 @@ function validURL(str) {
     '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
   return !!pattern.test(str);
+}
+
+function isUniqueOutput(value,node){
+  let result = true;
+  node.outputs.forEach(o=>{
+    if(o._data == value)result = false;
+  })
+  return result;
 }
