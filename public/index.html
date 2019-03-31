@@ -6,24 +6,8 @@
 <body style='width:100%; height:100%'>
 <canvas id='mycanvas'></canvas>
 <script>
-var graph = new LGraph();
 
-var canvas = new LGraphCanvas("#mycanvas", graph);
-
-
-var node_const = LiteGraph.createNode("basic/const");
-node_const.pos = [200,200];
-graph.add(node_const);
-node_const.setValue(4.5);
-
-var node_watch = LiteGraph.createNode("basic/watch");
-node_watch.pos = [700,200];
-graph.add(node_watch);
-
-node_const.connect(0, node_watch, 0 );
-
-graph.start()
 </script>
-<script src="my_code.js"></script>
+<script src="practice_zone.js"></script>
 </body>
 </html>
