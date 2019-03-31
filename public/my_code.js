@@ -176,9 +176,11 @@ graph.add(node_textJoin);
 //node constructor class
 function MyFetchNode()
 {
+  this.addInput("text","string");
   this.addOutput("text","string");
   this.text = this.addWidget("button","Fetch Data",null,e=>{
-     fetch('avatar_upgrades')
+     
+     fetch(this.getInputData(0))
      .then(res=>{
        return res.json();
      })
@@ -203,3 +205,18 @@ var node_fetch = LiteGraph.createNode("basic/fetch");
 node_fetch.pos = [800,500];
 graph.add(node_fetch);
 
+
+
+
+
+// UTILS
+
+function validURL(str) {
+  var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+  return !!pattern.test(str);
+}
